@@ -24,7 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # obsidian folder
-src/content/notes/.*
-src/content/notes/_*.md
-src/content/notes/_draft
+src/content/note/.*
+src/content/note/_*.md
+src/content/note/_draft
 !src/content/note/_template/*.md
