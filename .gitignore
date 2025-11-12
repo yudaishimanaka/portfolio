@@ -27,4 +27,5 @@ pnpm-debug.log*
 src/content/note/.*
 src/content/note/_*.md
 src/content/note/_draft
+!src/content/note/_script/*.js
 !src/content/note/_template/*.md
