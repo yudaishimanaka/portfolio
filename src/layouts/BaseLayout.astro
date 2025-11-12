@@ -1,0 +1,81 @@
+---
+// src/layouts/BaseLayout.astro
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'yudai.dev', description = '' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    {description && <meta name="description" content={description} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-zinc-50 text-zinc-900">
+    <header class="fixed top-0 left-0 right-0 w-full flex h-14 items-center px-6 bg-zinc-50">
+      <div class="flex-1 flex justify-start items-center">
+        <a href="/" class="relative text-2xl font-bold">
+          <img 
+            id="header-logo" 
+            src="/logo.png" 
+            alt="logo" 
+            class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 opacity-100"
+          />
+          <span id="typewriter" class="relative z-10 inline-block transition-all duration-500 ease-out bg-zinc-50"></span>
+        </a>
+      </div>
+    </header>
+
+    <main class="content-wrapper mt-7 pt-14 pb-7 flex-1">
+      <slot />
+    </main>
+    
+    <footer class="fixed bottom-0 left-0 right-0 w-full flex h-14 items-center px-6 bg-zinc-50">
+      <div class="text-base font-bold text-zinc-600 font-inter">
+        <a href="/" class="text-zinc-600 hover:text-zinc-800 hover:no-underline">
+          © {new Date().getFullYear()} {title}
+        </a>
+      </div>
+    </footer>
+    
+    <script>
+      // タイプライターエフェクトは1回のみ実行
+      const typewriterElement = document.getElementById('typewriter');
+      const text = 'yudai.dev';
+      let index = 0;
+      
+      function typeWriter() {
+        if (index < text.length) {
+          typewriterElement!.textContent += text.charAt(index);
+          index++;
+          setTimeout(typeWriter, 30); // 50msごとに1文字追加
+        } else {
+          // タイプライター完了後、テキストを右にスライド
+          setTimeout(() => {
+            typewriterElement!.style.transform = 'translateX(44px)'; // ロゴの幅(32px) + gap(12px)
+            
+            // アニメーション完了後、メインコンテンツにイベントを発行
+            setTimeout(() => {
+              window.dispatchEvent(new Event('headerAnimationComplete'));
+            }, 500); // スライドアニメーションの完了を待つ
+          }, 100); // 100ms待ってからアニメーション開始
+        }
+      }
+      
+      // ページ読み込み時に1回だけ実行
+      typeWriter();
+    </script>
+  </body>
+</html>

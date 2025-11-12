@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-size: 16px;
+    --content-padding: 1.5rem;
+  }
+
+  a {
+    @apply no-underline hover:no-underline;
+  }
+}
+
+@layer components {
+  .content-wrapper {
+    @apply w-full mx-auto px-6;
+  }
+}

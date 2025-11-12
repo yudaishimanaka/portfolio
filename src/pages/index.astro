@@ -1,16 +1,130 @@
 ---
-
+// src/pages/index.astro
+import Layout from '../layouts/BaseLayout.astro';
+import { Github, NotebookText } from 'lucide-astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	<div class="min-h-[calc(100vh-7rem)] flex items-center">
+		<!-- profile -->
+		<section id="profile" class="mb-10 w-full">
+			<h1 class="text-4xl font-bold mb-4">
+				<span id="main-typewriter-1" data-text="yudai shimanaka"></span>
+			</h1>
+			<p class="text-2xl font-bold mb-4">
+				<span id="main-typewriter-2" data-text="web/infrastructure engineer"></span>
+			</p>
+
+		<!-- social icon -->
+		<div class="flex mb-4">
+
+			<!-- X (Twitter) -->
+			<a
+				href="https://x.com/yudaideath"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="social-icon flex items-center pr-4 opacity-0 transition-all duration-500 ease-out"
+				style="transform: translateX(-10px);"
+				title="X (Twitter)"
+			>
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+					<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+				</svg>
+			</a>
+
+			<!-- GitHub -->
+			<a
+				href="https://github.com/yudaishimanaka"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="social-icon flex items-center pr-4 opacity-0 transition-all duration-500 ease-out"
+				style="transform: translateX(-10px);"
+				title="GitHub"
+			>
+				<Github size={32} />
+			</a>
+		</div>
+
+		<!-- note link -->
+		<div class="mt-14">
+			<a
+				href="/note"
+				class="note-button inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-zinc-50 rounded-lg hover:bg-zinc-800 transition-colors opacity-0"
+				style="transform: translateX(-10px);"
+			>
+				<NotebookText size={24} />
+				<span class="font-bold">Notes</span>
+			</a>
+		</div>
+	</section>
+	</div>
+
+	<script>
+		// ヘッダーアニメーション完了後にメインコンテンツのタイプライターを開始
+		window.addEventListener('headerAnimationComplete', () => {
+			const elements = [
+				document.getElementById('main-typewriter-1'),
+				document.getElementById('main-typewriter-2')
+			];
+
+			let currentElementIndex = 0;
+
+			function typeNextElement() {
+				if (currentElementIndex >= elements.length) {
+					// タイプライター完了後、ソーシャルアイコンをスライドイン
+					animateSocialIcons();
+					return;
+				}
+
+				const element = elements[currentElementIndex];
+				if (!element) {
+					currentElementIndex++;
+					typeNextElement();
+					return;
+				}
+
+				const text = element.getAttribute('data-text') || '';
+				let index = 0;
+
+				function type() {
+					if (index < text.length && element) {
+						element.textContent += text.charAt(index);
+						index++;
+						setTimeout(type, 30); // 30msごとに1文字追加
+					} else {
+						// 次の要素へ
+						currentElementIndex++;
+						setTimeout(typeNextElement, 100); // 100ms待ってから次の要素
+					}
+				}
+
+				type();
+			}
+
+			typeNextElement();
+		});
+
+		// ソーシャルアイコンを左から順にスライドイン
+		function animateSocialIcons() {
+			const icons = document.querySelectorAll('.social-icon');
+			icons.forEach((icon, index) => {
+				setTimeout(() => {
+					if (icon instanceof HTMLElement) {
+						icon.style.opacity = '1';
+						icon.style.transform = 'translateX(0)';
+					}
+				}, index * 150); // 各アイコンを150ms間隔でスライドイン
+			});
+
+			// アイコンのアニメーション完了後、ノートボタンをフェードイン
+			setTimeout(() => {
+				const noteButton = document.querySelector('.note-button');
+				if (noteButton instanceof HTMLElement) {
+					noteButton.style.opacity = '1';
+					noteButton.style.transform = 'translateX(0)';
+					noteButton.style.transition = 'all 0.5s ease-out';
+				}
+			}, icons.length * 150 + 200); // アイコンのアニメーション完了後200ms待つ
+		}
+	</script>
+</Layout>
