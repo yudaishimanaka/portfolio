@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# obsidian folder
+src/content/notes/.*
+src/content/notes/_*.md
+src/content/notes/_draft
+!src/content/note/_template/*.md
