@@ -16,6 +16,6 @@ tags:
 趣味で作成したコードは公開できそうだったらサイトのトップに掲載していくつもり、あとは気が向いたらnoteを書く、ゆるっとね。
 
 後今回Astroで作成したサイトをLighthouseで分析してみたらパフォーマンススコア97だった  
-First Contentful Paintって指標だけ微妙だったので、fontを外部読み込みせずビルドに含めちゃえば良くなると思う。  
+First Contentful Paintって指標だけ微妙だったので、fontを非同期読み込みするか外部読み込みせずpublicとかに置いて参照すれば良くなると思う。  
 SEO周りも頑張ってパフォーマンススコア99超えを目指すね。
 ![lighthouseのパフォーマンススコア](_images/lighthouse-score-2.png)![インサイト](_images/insight.png)
