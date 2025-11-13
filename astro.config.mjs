@@ -7,6 +7,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://yudai.dev',
+  site: 'https://www.yudai.dev',
   integrations: [mdx(), tailwind(), sitemap()]
 });
