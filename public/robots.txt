@@ -1,0 +1,7 @@
+# robots.txt for yudai.dev
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yudai.dev/sitemap-index.xml
