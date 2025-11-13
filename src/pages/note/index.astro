@@ -10,7 +10,7 @@ const notes = (await getCollection('note', ({ data }) => {
 ---
 
 <Layout title="Notes | yudai.dev" description="技術記事やメモを掲載しています">
-  <div class="w-full">
+  <div class="w-full pt-7">
     <h1 class="sticky top-14 bg-zinc-50 z-40 text-4xl font-bold mb-8">Notes</h1>
     
     <div class="mx-auto">
@@ -30,7 +30,7 @@ const notes = (await getCollection('note', ({ data }) => {
           return (
             <article>
               <a href={`/note/${note.data.id}`} class="group">
-                <h2 class="text-2xl font-bold mb-2 text-zinc-800 group-hover:text-blue-600 transition-colors">
+                <h2 class="text-xl font-bold mb-2 text-zinc-800 group-hover:text-blue-600 transition-colors">
                   {note.data.title}
                 </h2>
                 

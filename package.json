@@ -12,6 +12,7 @@
     "@astrojs/mdx": "^4.3.7",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/typography": "^0.5.19",
     "astro": "^5.14.5",
     "lucide-astro": "^0.553.0",
     "sqids": "^0.3.0",
