@@ -4,9 +4,10 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import fontOptimizer from './src/integrations/font-optimizer.ts';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.yudai.dev',
-  integrations: [mdx(), tailwind(), sitemap()]
+  integrations: [mdx(), tailwind(), sitemap(), fontOptimizer()]
 });
