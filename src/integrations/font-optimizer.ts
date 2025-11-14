@@ -1,5 +1,7 @@
 import type { AstroIntegration } from 'astro';
 import { promises as fs } from 'fs';
+import { join } from 'path';
+import { fileURLToPath } from 'url';
 import { JSDOM } from 'jsdom';
 
 const LIMIT_CHARS = 1000;
@@ -15,15 +17,15 @@ export default (): AstroIntegration => ({
     'astro:build:done': async ({ dir, routes }) => {
       console.log('🔤 Font Optimizer: Starting font optimization...');
       
+      const distDir = fileURLToPath(dir);
+      
       for (const route of routes) {
         try {
           const distURLs = route.distURL;
           if (!distURLs || distURLs.length === 0) continue;
           
-          // pathnameから先頭の/を除去して相対パスに変換
-          const relativePath = distURLs[0].pathname.replace(/^\//, '');
-          // dirとrelativePathを結合して完全なファイルパスを作成
-          const filePath = new URL(relativePath, dir).pathname;
+          // URLからファイルパスに変換
+          const filePath = fileURLToPath(distURLs[0]);
           
           // HTMLファイルのみ処理
           if (filePath && filePath.endsWith('.html')) {
