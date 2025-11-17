@@ -24,7 +24,7 @@ const { title = 'yudai.dev', description = '' } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col bg-zinc-50 text-zinc-900">
-    <header class="fixed top-0 left-0 right-0 w-full flex h-14 items-center px-6 bg-zinc-50">
+    <header class="fixed top-0 left-0 right-0 w-full mx-auto max-w-7xl flex h-14 items-center px-6 bg-zinc-50">
       <div class="flex-1 flex justify-start items-center">
         <a href="/" class="relative text-2xl font-bold">
           <img 
@@ -38,11 +38,11 @@ const { title = 'yudai.dev', description = '' } = Astro.props;
       </div>
     </header>
 
-    <main class="content-wrapper mt-7 pt-7 pb-14 flex-1">
+    <main class="content-wrapper mt-7 pt-7 pb-14 flex-1 ">
       <slot />
     </main>
     
-    <footer class="fixed bottom-0 left-0 right-0 w-full flex h-14 items-center px-6 bg-zinc-50">
+    <footer class="fixed bottom-0 left-0 right-0 w-full mx-auto max-w-7xl flex h-14 items-center justify-center px-6 bg-zinc-50">
       <div class="text-base font-bold text-zinc-600 font-inter">
         <a href="/" class="text-zinc-600 hover:text-zinc-800 hover:no-underline">
           © {new Date().getFullYear()} {title}
