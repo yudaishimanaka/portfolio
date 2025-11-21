@@ -1,6 +1,5 @@
 import type { AstroIntegration } from 'astro';
 import { promises as fs } from 'fs';
-import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { JSDOM } from 'jsdom';
 
@@ -14,10 +13,8 @@ const LIMIT_CHARS = 1000;
 export default (): AstroIntegration => ({
   name: 'font-optimizer',
   hooks: {
-    'astro:build:done': async ({ dir, routes }) => {
+    'astro:build:done': async ({ routes }) => {
       console.log('🔤 Font Optimizer: Starting font optimization...');
-      
-      const distDir = fileURLToPath(dir);
       
       for (const route of routes) {
         try {
