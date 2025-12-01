@@ -101,8 +101,17 @@ export const extractBodyTextAndEncode = async (
     // body内のテキストを取得
     const textContent = body.textContent?.trim() ?? '';
     
+    // data-text属性からもテキストを抽出
+    const dataTextElements = body.querySelectorAll('[data-text]');
+    const dataTextContent = Array.from(dataTextElements)
+      .map((el) => el.getAttribute('data-text') || '')
+      .join('');
+    
+    // bodyのテキストとdata-textのテキストを結合
+    const combinedText = textContent + dataTextContent;
+    
     // 全角スペースと半角スペースを除外し、改行や連続する空白を削除
-    const normalizedText = textContent
+    const normalizedText = combinedText
       .replace(/[\u3000\s]+/g, '')
       .replace(/\n+/g, '');
     
