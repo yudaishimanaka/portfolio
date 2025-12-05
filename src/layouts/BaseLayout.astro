@@ -17,7 +17,7 @@ const {
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     {description && <meta name="description" content={description} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +29,7 @@ const {
     <header class="fixed top-0 left-0 right-0 w-full mx-auto max-w-7xl flex h-14 items-center px-6 bg-zinc-50">
       <div class="flex-1 flex justify-start items-center">
         <a href="/" class="text-2xl font-bold">
-          <span id="typewriter" class="inline-block"></span>
+          yudai.dev
         </a>
       </div>
     </header>
@@ -45,28 +45,5 @@ const {
         </a>
       </div>
     </footer>
-    
-    <script>
-      // タイプライターエフェクトは1回のみ実行
-      const typewriterElement = document.getElementById('typewriter');
-      const text = 'yudai.dev';
-      let index = 0;
-      
-      function typeWriter() {
-        if (index < text.length) {
-          typewriterElement!.textContent += text.charAt(index);
-          index++;
-          setTimeout(typeWriter, 30); // 30msごとに1文字追加
-        } else {
-          // タイプライター完了後、メインコンテンツにイベントを発行
-          setTimeout(() => {
-            window.dispatchEvent(new Event('headerAnimationComplete'));
-          }, 100);
-        }
-      }
-      
-      // ページ読み込み時に1回だけ実行
-      typeWriter();
-    </script>
   </body>
 </html>
