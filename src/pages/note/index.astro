@@ -9,14 +9,14 @@ const notes = (await getCollection('note', ({ data }) => {
 })).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 ---
 
-<Layout title="Notes | yudai.dev" description="技術記事やメモを掲載しています">
+<Layout title="notes | yudai.dev" description="技術記事やメモを掲載しています">
   <div class="w-full pt-7">
-    <h1 class="sticky top-14 bg-zinc-50 z-40 text-4xl font-bold mb-8">Notes</h1>
+    <h1 class="sticky top-14 bg-zinc-50 z-40 text-4xl font-bold mb-8">notes</h1>
     
     <div class="mx-auto">
     {notes.length === 0 ? (
       <p class="text-xl font-bold text-zinc-800">
-        表示するノートがありません。
+        表示するnotesがありません。
       </p>
     ) : (
       <div class="space-y-6">

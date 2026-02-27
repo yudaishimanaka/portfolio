@@ -1,35 +1,41 @@
 ---
 // src/pages/index.astro
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/BaseLayout.astro';
 import { Github, NotebookText } from 'lucide-astro';
+
+// publicがtrueの記事のみ取得し、公開日順でソート
+const notes = (await getCollection('note', ({ data }) => {
+  return data.public === true;
+})).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 ---
 
 <Layout 
   title="yudai.dev"
-  description="yudai shimanakaのポートフォリオ"
+  description="yudai.dev"
 >
-	<div class="min-h-[calc(100vh-7rem)] flex items-center">
-		<!-- profile -->
-		<section id="profile" class="mb-10 w-full">
-			<h1 class="text-4xl font-bold mb-4">
+	<div class="min-h-full flex items-center mt-32">
+		<!-- title -->
+		<section id="title" class="w-full">
+			<h1 class="text-3xl md:text-3xl font-bold mb-4">
 				yudai shimanaka
 			</h1>
-			<p class="text-2xl font-bold mb-4">
-				web/infrastructure engineer
+			<p class="text-xl md:text-xl font-bold mb-4">
+				webとinfrastructureで食べています。
 			</p>
 
 			<!-- social icon -->
-			<div class="flex mb-4">
+			<div class="flex">
 
 				<!-- X (Twitter) -->
 				<a
 					href="https://x.com/yudaideath"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="flex items-center pr-4"
+					class="social-icon pr-2"
 					title="X (Twitter)"
 				>
-					<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+					<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
 						<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
 					</svg>
 				</a>
@@ -39,25 +45,68 @@ import { Github, NotebookText } from 'lucide-astro';
 					href="https://github.com/yudaishimanaka"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="flex items-center pr-4"
+					class="social-icon pr-2"
 					title="GitHub"
 				>
-					<Github size={32} />
-				</a>
-			</div>
-
-			<!-- note link -->
-			<div class="mt-14">
-				<a
-					href="/note"
-					class="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-zinc-50 rounded-lg hover:bg-zinc-800 transition-colors"
-				>
-					<NotebookText size={24} />
-					<span class="font-bold">Notes</span>
+					<Github size={28} />
 				</a>
 			</div>
 		</section>
 	</div>
 
+	<div class="min-h-full flex items-center mt-32">
+		<!-- notes -->
+		<section id="notes" class="w-full">
+			<h1 class="text-3xl md:text-3xl font-bold mb-4">
+				notes
+			</h1>
+			<div class="mx-auto">
+			{notes.length === 0 ? (
+				<p class="text-xl font-bold text-zinc-800">
+					表示するnotesがありません。
+				</p>
+			) : (
+				<div class="space-y-6">
+					{notes.map((note) => {
+						const formattedDate = note.data.publishedAt.toLocaleDateString('ja-JP', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric',
+						});
+						
+						return (
+							<article>
+								<a href={`/note/${note.data.id}`} class="group">
+									<h2 class="text-xl font-bold mb-2 text-zinc-800 group-hover:text-blue-600 transition-colors">
+										{note.data.title}
+									</h2>
+									
+									<div class="flex items-center gap-4 text-sm text-zinc-600 mb-3">
+										<time datetime={note.data.publishedAt.toISOString()}>
+											{formattedDate}
+										</time>
+									</div>
 
+									{note.data.description && (
+										<p class="text-sm text-zinc-700 mb-3 line-clamp-2">
+											{note.data.description}
+										</p>
+									)}
+								</a>
+							</article>
+						);
+					})}
+				</div>
+			)}
+			</div>
+
+			<a 
+				href="/note"
+			>
+				<p class="mt-6 text-blue-500 hover:text-blue-700 font-bold">
+					notesをさらに見る
+				</p>
+			</a>
+		</section>
+	</div>
 </Layout>

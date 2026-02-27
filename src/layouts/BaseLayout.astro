@@ -26,10 +26,10 @@ const {
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col bg-zinc-50 text-zinc-900">
-    <header class="fixed top-0 left-0 right-0 w-full mx-auto max-w-7xl flex h-14 items-center px-6 bg-zinc-50">
-      <div class="flex-1 flex justify-start items-center">
+    <header class="fixed top-0 left-0 right-0 w-full mx-auto max-w-4xl flex h-14 items-center justify-between px-6 bg-zinc-50 z-[100]">
+      <div class="flex items-center">
         <a href="/" class="text-2xl font-bold">
-          yudai.dev
+          <span id="header-typewriter-text"></span><span id="header-typewriter-cursor" class="inline-block">|</span>
         </a>
       </div>
     </header>
@@ -47,3 +47,28 @@ const {
     </footer>
   </body>
 </html>
+
+<script>
+  // ヘッダー用タイプライターエフェクト
+  const headerText = "yudai.dev";
+  const headerTextElement = document.getElementById("header-typewriter-text");
+  const headerCursorElement = document.getElementById("header-typewriter-cursor");
+  let headerIndex = 0;
+
+  function headerTypeWriter() {
+    if (headerIndex < headerText.length && headerTextElement) {
+      headerTextElement.textContent += headerText.charAt(headerIndex);
+      headerIndex++;
+      setTimeout(headerTypeWriter, 50);
+    }
+  }
+
+  // ヘッダーのカーソル点滅
+  setInterval(() => {
+    if (headerCursorElement) {
+      headerCursorElement.style.opacity = headerCursorElement.style.opacity === "0" ? "1" : "0";
+    }
+  }, 600);
+
+  window.addEventListener("DOMContentLoaded", headerTypeWriter);
+</script>
