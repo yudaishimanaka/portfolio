@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const noteCollection = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: 'src/content/note' }),
+  loader: glob({ pattern: '[^_]*.{md,mdx}', base: 'src/content/note' }),
   schema: z.object({
     id: z.string(),
     title: z.string(),
