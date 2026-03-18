@@ -13,60 +13,54 @@ const LIMIT_CHARS = 1000;
 export default (): AstroIntegration => ({
   name: 'font-optimizer',
   hooks: {
-    'astro:build:done': async ({ routes }) => {
+    'astro:build:done': async ({ dir }) => {
       console.log('🔤 Font Optimizer: Starting font optimization...');
+
+      const distDir = fileURLToPath(dir);
+      const htmlFiles = await collectHtmlFiles(distDir);
       
-      for (const route of routes) {
+      for (const filePath of htmlFiles) {
         try {
-          const distURLs = route.distURL;
-          if (!distURLs || distURLs.length === 0) continue;
-          
-          // URLからファイルパスに変換
-          const filePath = fileURLToPath(distURLs[0]);
-          
-          // HTMLファイルのみ処理
-          if (filePath && filePath.endsWith('.html')) {
-            const htmlContent = await fs.readFile(filePath, 'utf-8');
-            
-            // JSDOMでHTMLをパース
-            const dom = new JSDOM(htmlContent);
-            const document = dom.window.document;
-            
-            // bodyタグ内のテキストを抽出してエンコード
-            const { uniqueText, encodedText } = await extractBodyTextAndEncode(filePath);
-            
-            // 文字数制限チェック
-            if (uniqueText.length > LIMIT_CHARS) {
-              console.warn(
-                `⚠️  Skipping ${filePath}: Text length (${uniqueText.length}) exceeds ${LIMIT_CHARS} characters limit.`
-              );
-              continue;
-            }
-            
-            // Google Fontsの<link>タグを検索
-            const linkTag = document.querySelector<HTMLLinkElement>(
-              'link[href*="https://fonts.googleapis.com/css2?family="]'
+          const htmlContent = await fs.readFile(filePath, 'utf-8');
+
+          // JSDOMでHTMLをパース
+          const dom = new JSDOM(htmlContent);
+          const document = dom.window.document;
+
+          // bodyタグ内のテキストを抽出してエンコード
+          const { uniqueText, encodedText } = await extractBodyTextAndEncode(filePath);
+
+          // 文字数制限チェック
+          if (uniqueText.length > LIMIT_CHARS) {
+            console.warn(
+              `⚠️  Skipping ${filePath}: Text length (${uniqueText.length}) exceeds ${LIMIT_CHARS} characters limit.`
             );
-            
-            if (linkTag) {
-              const originalHref = linkTag.getAttribute('href') || '';
-              const newHref = originalHref.includes('&text=')
-                ? originalHref.replace(/&text=.*$/, `&text=${encodedText}`)
-                : `${originalHref}&text=${encodedText}`;
-              
-              linkTag.setAttribute('href', newHref);
-              
-              console.log(`✅ Optimized: ${filePath} (${uniqueText.length} unique chars)`);
-              
-              // ファイルを上書き保存
-              await fs.writeFile(filePath, dom.serialize(), 'utf-8');
-            } else {
-              console.log(`ℹ️  No Google Fonts link found: ${filePath}`);
-            }
+            continue;
+          }
+
+          // Google Fontsの<link>タグを検索
+          const linkTag = document.querySelector<HTMLLinkElement>(
+            'link[href*="https://fonts.googleapis.com/css2?family="]'
+          );
+
+          if (linkTag) {
+            const originalHref = linkTag.getAttribute('href') || '';
+            const newHref = originalHref.includes('&text=')
+              ? originalHref.replace(/&text=.*$/, `&text=${encodedText}`)
+              : `${originalHref}&text=${encodedText}`;
+
+            linkTag.setAttribute('href', newHref);
+
+            console.log(`✅ Optimized: ${filePath} (${uniqueText.length} unique chars)`);
+
+            // ファイルを上書き保存
+            await fs.writeFile(filePath, dom.serialize(), 'utf-8');
+          } else {
+            console.log(`ℹ️  No Google Fonts link found: ${filePath}`);
           }
         } catch (error) {
           console.error(
-            `❌ Error processing file ${route.distURL?.[0]?.pathname}:`,
+            `❌ Error processing file ${filePath}:`,
             error instanceof Error ? error.message : String(error)
           );
         }
@@ -76,6 +70,20 @@ export default (): AstroIntegration => ({
     },
   },
 });
+
+const collectHtmlFiles = async (dirPath: string): Promise<string[]> => {
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+  const files = await Promise.all(
+    entries.map(async (entry) => {
+      const fullPath = `${dirPath}/${entry.name}`;
+      if (entry.isDirectory()) {
+        return collectHtmlFiles(fullPath);
+      }
+      return fullPath.endsWith('.html') ? [fullPath] : [];
+    })
+  );
+  return files.flat();
+};
 
 /**
  * HTMLファイルからbodyタグ内のテキストを抽出し、URLエンコードします

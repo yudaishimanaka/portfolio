@@ -6,9 +6,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-types": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.1.2",
     "@astrojs/sitemap": "^3.7.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.0.0",
@@ -20,7 +22,8 @@
   },
   "devDependencies": {
     "@types/jsdom": "^27.0.0",
-    "baseline-browser-mapping": "^2.10.0"
+    "baseline-browser-mapping": "^2.10.0",
+    "wrangler": "^4.75.0"
   },
   "volta": {
     "node": "24.14.0",
