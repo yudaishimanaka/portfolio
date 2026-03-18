@@ -23,6 +23,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# wrangler output
+.wrangler/
+
 # obsidian folder
 src/content/note/.*
 src/content/note/_*.md
