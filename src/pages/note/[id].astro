@@ -1,6 +1,6 @@
 ---
 // src/pages/note/[id].astro
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/BaseLayout.astro';
 import { ChevronLeft } from 'lucide-astro';
 
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const { note } = Astro.props;
-const { Content } = await note.render();
+const { Content } = await render(note);
 
 const formattedDate = note.data.publishedAt.toLocaleDateString('ja-JP', {
   year: 'numeric',
